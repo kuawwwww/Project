@@ -42,7 +42,7 @@ To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawww
 
 
 ## Code Structure
-Only part of the important code is presented below, the full code can be seen at:  [TSP(GA).py](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示")  
+Only part of the important code is presented below, the full code can be seen at:  [TSP(GA).py](https://github.com/kuawwwww/Project/blob/main/TSP(GA).py "悬停显示")  
 
 
 Main content：  
@@ -165,14 +165,14 @@ We choose **partial matching crossover**.
             x = np.argwhere(path_a == path_a[i]) 
             y = np.argwhere(path_b == path_b[i])
             if len(x) == 2:
-                path_a[x[x != i]] = path_a2[i] #由于x是array
+                path_a[x[x != i]] = path_a2[i] 
             if len(y) == 2:
                 path_b[y[y != i]] = path_b2[i]
         return path_a, path_b
     
     def Cross(self):
 
-        for i in range(0,self.select_num,2): #步长为2的原因是因为要取i和i+1进行交叉
+        for i in range(0,self.select_num,2): 
             if self.cross_prob >= np.random.rand():
                 self.child[i, :], self.child[i + 1, :] = self.intercross(self.child[i, :],self.child[i + 1, :])
   ```
