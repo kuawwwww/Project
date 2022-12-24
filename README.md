@@ -2,25 +2,15 @@
 >   This project uses a genetic algorithm to solve the TSP problem: first a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.
 
 ## Table of Contents
-* [Prerequisites](#Prerequisites)
 * [General Info](#general-information)
-* [Technologies Used](#technologies-used)
-* [Features](#features)
+* [Prerequisites](#prerequisites)
 * [Screenshots](#screenshots)
-* [Setup](#setup)
 * [Usage](#usage)
-* [Project Status](#project-status)
+* [Project Structure](#project-structure)
 * [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
 <!-- * [License](#license) -->
-
-## Prerequisites
-Baselines requires python3 with the development headers. You'll also need to use a third library: numpy, pandas, matplotlib, and time. You can install them (which are themself pip packages) via
-··· pip install numpy
-··· pip install pandas
-··· pip install matplotlib
-··· pip install time
 
 
 ## General Information
@@ -31,29 +21,19 @@ Baselines requires python3 with the development headers. You'll also need to use
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 
-## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
-
-
-## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+##  Prerequisites
+Baselines requires python3 with the development headers. You'll also need to use a third library: numpy, pandas, matplotlib, and time. You can install them (which are themself pip packages) via
+```python
+pip install numpy
+pip install pandas
+pip install matplotlib
+pip install time
+```
 
 
 ## Screenshots
 ![Example screenshot](./img/screenshot.png)
 <!-- If you have screenshots you'd like to share, include them here. -->
-
-
-## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
-
 
 ## Usage
 How does one go about using it?
@@ -62,8 +42,8 @@ Provide various use cases and code examples here.
 `write-your-code-here`
 
 
-## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+### Project Structure
+Project is:  _complete_ 
 
 
 ## Room for Improvement
