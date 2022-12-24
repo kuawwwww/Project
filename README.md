@@ -8,8 +8,7 @@
 * [Code Structure](#code-structure)
 * [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
-* [Contact](#contact)
-<!-- * [License](#license) -->
+
 
 
 ## TSP problem
