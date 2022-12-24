@@ -5,7 +5,7 @@
 * [TSP problem](#tsp-problem)
 * [Prerequisites](#prerequisites)
 * [Usage](#usage)
-* [Project Structure](#project-structure)
+* [Code Structure](#code-structure)
 * [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
@@ -44,42 +44,29 @@ This project uses a genetic algorithm to solve the TSP problem:
 * Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. 
 * Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.  
 
-To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示"). So you can update the table directly when you need to use it.  
+To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示"). So you can update the table directly when you need to use it.  But remember, the 1111111
 
 
-### Project Structure
+## Code Structure
 Project is:  _complete_ 
 
+### Variable names: 
+|**Variable names:**|**content**|
+|:--:|:--:|
+|self.maximize_interation|Maximum literation|
+|self.population_size|population size|
+|self.cross_prob|crossover probility|
+|self.mutation_prob|mutation probility|
+|self.select_prob|selection probility|
+|self.data|Coordinate data of the city|
+|self.num|number of cities|
+|self.select_num|Determine the number of choices of offspring by selection probability|
+|self.parent，self.child|Initialize parent and child|
+
+### GA process:
+1. Calculate the distance between cities (the code uses Euclidean distance as an example)
+
 ```python
-class Genatic_TSP(object):
-
-    def __init__(self, data, city_dict, maximize_interation=500,
-                 population_size=200, cross_prob=0.9,
-                 mutation_prob=0.03, select_prob=0.8
-                 ):
-        self.maximize_interation = maximize_interation         
-        self.population_size = population_size   # The number of population
-        self.cross_prob = cross_prob    # Cross probability
-        self.mutation_prob = mutation_prob    # Mutation probability
-        self.select_prob = select_prob  # Selcet probability
-
-        self.data = data
-        self.city_dict = city_dict
-
-        self.num = len(data)   # number of cities
-
-        self.distance_matrix = self.computing_distance()
-
-        self.select_num = int(self.population_size * self.select_prob)
-
-        #Initialize parent and child
-        self.parent = np.array([0]* self.population_size * self.num).reshape(self.population_size, self.num)
-        self.child = np.array([0] * self.select_num * self.num).reshape(self.select_num, self.num)
-
-        self.fitness = np.zeros(self.population_size)
-        self.best_fit = []
-        self.best_path = []
-        
     #computing the distance matrix
     def computing_distance(self): 
         res = np.zeros((self.num, self.num))
@@ -88,8 +75,11 @@ class Genatic_TSP(object):
                 res[i, j] = np.linalg.norm(self.data[i, :] - self.data[j, :])
                 res[j, i] = res[i, j]
         return res
+```
+2. Calculate the path length and output the initial solution
 
-    # Generate parents
+ ```python
+ # Generate parents
     def generate_parents(self):
         sequence = np.array(range(self.num))
         for i in range(self.population_size):
@@ -118,7 +108,14 @@ class Genatic_TSP(object):
             route_city += str(self.city_dict[path[i]]) + '-->'
         route_city += str(self.city_dict[path[0]]) + '\n'
         print(route_city)
-    
+  ```
+2. Selection: PMX 
+We choose **partial matching crossover**. 
+> The reason is that it ensures that genes appear only once in each chromosome and no duplicate genes appear in a chromosome.  
+PMX determines the crossover region by randomly selecting two crossover points. After performing the crossover, we usually get two invalid chromosomes and individual genes will be duplicated. In order to repair the chromosomes, we can establish a matching relationship for each chromosome within the crossover region and then apply this matching relationship to the duplicated genes outside the crossover region to eliminate the conflict.
+
+
+```python
     # Generate childs
     def Select(self,index):
         pick = []
