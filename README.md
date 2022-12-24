@@ -48,7 +48,10 @@ To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawww
 
 
 ## Code Structure
-Project is:  _complete_ 
+Only part of the important code is presented below, the full code can be seen at:  [TSP(GA).py](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示")  
+Main content：  
+* GA process
+* Visualization
 
 ### Variable names: 
 |**Variable names:**|**content**|
@@ -109,12 +112,16 @@ Project is:  _complete_
         route_city += str(self.city_dict[path[0]]) + '\n'
         print(route_city)
   ```
-3. Selection: Roulette wheel selection  
-Since the TSP problem is a minimization problem, the fitness function needs to be changed to maximize it. Also, the distance is long, resulting in small differences between the fitness functions, so at this point, to avoid falling into prematureness, the selection probabilities we convert to:    
+3. Selection: *Roulette wheel selection*  
+Since the TSP problem is a minimization problem, the fitness function needs to be changed to maximize it. 
 
-4. Crossover: PMX   
-We choose **partial matching crossover**. 
-> The reason is that it ensures that genes appear only once in each chromosome and no duplicate genes appear in a chromosome.    
+Fitness funtion:   
+$$f'(x)=\ \frac{1}{f(x)}\ $$
+
+Also, the distance is long, resulting in small differences between the fitness functions, so at this point, to avoid falling into prematureness, the selection probabilities we convert to:    
+
+$$p=\ \frac{p_i}{\sum_{i} p_i}\ $$
+
 
 ```python
     # Generate childs
@@ -136,7 +143,14 @@ We choose **partial matching crossover**.
             else:
                 i += 1
         self.child = self.parent[index,:] #Generate child
+  ```
 
+
+4. Crossover: *PMX*   
+We choose **partial matching crossover**. 
+> The reason is that it ensures that genes appear only once in each chromosome and no duplicate genes appear in a chromosome.    
+
+```python
     #  Partially-matched crossover, PMX , the main part in GA       
     def intercross(self,path_a,path_b):       
         r1 = np.random.randint(self.num)
@@ -151,9 +165,9 @@ We choose **partial matching crossover**.
             path_b2 = path_b.copy()
             path_a[i] = path_b1[i]
             path_b[i] = path_a1[i]
-            x = np.argwhere(path_a == path_a[i]) #返回非0的数组索引位置，索引数组条件为path_a == path_a[i]
+            x = np.argwhere(path_a == path_a[i]) 
             y = np.argwhere(path_b == path_b[i])
-            if len(x) == 2:#当DNA中有两个位置是同一样的数，换成
+            if len(x) == 2:
                 path_a[x[x != i]] = path_a2[i] #由于x是array
             if len(y) == 2:
                 path_b[y[y != i]] = path_b2[i]
@@ -164,7 +178,12 @@ We choose **partial matching crossover**.
         for i in range(0,self.select_num,2): #步长为2的原因是因为要取i和i+1进行交叉
             if self.cross_prob >= np.random.rand():
                 self.child[i, :], self.child[i + 1, :] = self.intercross(self.child[i, :],self.child[i + 1, :])
-
+  ```
+  
+ 5. Mutation and reverse  
+ > Simple mutation: Ensures that the DNA is diverse and that the algorithm can explore possible solutions in a sufficient number of directions.   
+ > Reverse: The approximation reversal, which means that the next DNA does not go to the next generation if it is not better, is also a part of the selection. To reduce data redundancy, we are not replacing all at once  
+  ```python
     # Mutation function, change part of DNA of childs with a rather low probability
     def Mutation(self):
 
@@ -189,69 +208,10 @@ We choose **partial matching crossover**.
             reverse[left:right + 1] = self.child[i,left:right+1][::-1]
             if self.compare_fitness(reverse) < self.compare_fitness(self.child[i,:]):
                 self.child[i,:] = reverse
-    
-    # Born function, to replace the original parents with newborn childs
-    def Born(self):
-        index = np.argsort(self.fitness)[::-1]
-        self.parent[index[:self.select_num],:] = self.child
+```   
 
-
-# Main function
-def Main(data,city_dict):
-
-    TSP_GA = Genatic_TSP(data,city_dict)
-
-    TSP_GA.generate_parents()
-
-    for i in range(TSP_GA.maximize_interation): 
-        TSP_GA.Select(i)    #Selction
-        TSP_GA.Cross()      #Crossing
-        TSP_GA.Mutation()   #Mutation
-        TSP_GA.Reverse()    #Reverse
-        TSP_GA.Born()       #Replace Parents
-
-        for j in range(TSP_GA.population_size):
-            TSP_GA.fitness[j] = TSP_GA.compare_fitness(TSP_GA.parent[j,:])
-        index = TSP_GA.fitness.argmin()
-        if (i + 1) % 50 == 0:
-            print('The shortest distance after ' + str(i + 1) + ' step is : ' + str(TSP_GA.fitness[index]))
-            print('The optimal path after ' + str(i + 1) + ' step is : ')
-            TSP_GA.out_path(TSP_GA.parent[index, :])  # Reveal the path 
-        TSP_GA.best_fit.append(TSP_GA.fitness[index])
-        TSP_GA.best_path.append(TSP_GA.parent[index,:])
-
-    # Draw the trend of interating results
-    fig, ax = plt.subplots()
-    ax.plot(TSP_GA.best_fit)
-    plt.title("The trend of the result", fontsize=10)
-    plt.xlabel("Iterating times", fontsize=10)
-    plt.ylabel("Distance", fontsize=10)
-    plt.savefig('GA_trend.png', dpi=300)
-    plt.show()
-
-    # Draw the optimal route
-    fig, ax = plt.subplots()
-    x = data[:, 0]
-    y = data[:, 1]
-    ax.scatter(y, x, linewidths=0.1)
-    for i, txt in enumerate(range(1, len(data) + 1)):
-        ax.annotate(TSP_GA.city_dict[txt-1], (y[i],x[i]))
-    res_ = TSP_GA.best_path[0]
-    x_ = x[res_]
-    y_ = y[res_]
- 
-
-    for i in range(len(data) - 1):
-        plt.quiver(y_[i],x_[i],y_[i + 1] - y_[i],x_[i + 1] - x_[i], color='r', width=0.005, angles='xy', scale=1,
-                   scale_units='xy')
-    plt.quiver(y_[-1], x_[-1], y_[0] - y_[-1],x_[0] - x_[-1], color='r', width=0.005, angles='xy', scale=1,
-               scale_units='xy')
-    plt.savefig('GA.png', dpi=300) #保存图片，由于直接输出的清晰度不高
-    plt.show()      
-    return TSP_GA
-
-
-# Main function    
+### Main function
+``` python   
 if __name__ == '__main__':
 
     data = pd.read_csv("D:\python and optimization\cn.csv")
@@ -265,39 +225,20 @@ if __name__ == '__main__':
 
     np.random.seed(1)
     Main(data,city_dict)
-
-
-start =time.clock()
-end = time.clock()
-print('Running time: %s Seconds'%(end-start))
-
 ```
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
 Room for improvement:
-- Improvement to be done 1
+- 
 - Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
 
 
 ## Acknowledgements
 Give credit here.
-- This project was inspired by...
+- This project was inspired by Tenglong Hong and Yucong Shi.
 - This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
 
 
-## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
 
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
