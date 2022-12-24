@@ -109,11 +109,12 @@ Project is:  _complete_
         route_city += str(self.city_dict[path[0]]) + '\n'
         print(route_city)
   ```
-2. Selection: PMX 
-We choose **partial matching crossover**. 
-> The reason is that it ensures that genes appear only once in each chromosome and no duplicate genes appear in a chromosome.  
-PMX determines the crossover region by randomly selecting two crossover points. After performing the crossover, we usually get two invalid chromosomes and individual genes will be duplicated. In order to repair the chromosomes, we can establish a matching relationship for each chromosome within the crossover region and then apply this matching relationship to the duplicated genes outside the crossover region to eliminate the conflict.
+3. Selection: Roulette wheel selection  
+Since the TSP problem is a minimization problem, the fitness function needs to be changed to maximize it. Also, the distance is long, resulting in small differences between the fitness functions, so at this point, to avoid falling into prematureness, the selection probabilities we convert to:    
 
+4. Crossover: PMX   
+We choose **partial matching crossover**. 
+> The reason is that it ensures that genes appear only once in each chromosome and no duplicate genes appear in a chromosome.    
 
 ```python
     # Generate childs
