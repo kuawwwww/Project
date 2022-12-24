@@ -32,7 +32,7 @@ pip install time
 
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![](https://github.com/kuawwwww/Project/raw/master/GA_plot.png) 
 <!-- If you have screenshots you'd like to share, include them here. -->
 
 ## Usage
