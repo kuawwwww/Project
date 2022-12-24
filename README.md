@@ -15,12 +15,6 @@
 ## TSP problem
 TSP, or traveling salesman problem: Suppose a traveling salesman has to visit n cities, and he must choose the path to take, with the constraint that each city can only visit once, and finally return to the origin. The optimization goal of the problem is to minimize the path length.  
 
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
-
 
 ## Prerequisites
 * python 3
@@ -44,14 +38,17 @@ This project uses a genetic algorithm to solve the TSP problem:
 * Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. 
 * Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.  
 
-To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示"). So you can update the table directly when you need to use it.  But remember, the 1111111
+To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示"). So you can update the table directly when you need to use it.  But remember, you can download the file and make some changes. However, 'capital','lat' and 'lng' must be included as header.
 
 
 ## Code Structure
 Only part of the important code is presented below, the full code can be seen at:  [TSP(GA).py](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示")  
+
+
 Main content：  
 * GA process
 * Visualization
+* Read csv
 
 ### Variable names: 
 |**Variable names:**|**content**|
@@ -228,17 +225,16 @@ if __name__ == '__main__':
 ```
 
 ## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
 Room for improvement:
-- 
-- Improvement to be done 2
+- At present, the code is prone to falling into precocity because the difference in fitness function is small, which is also one of the drawbacks of GA.
+- To enhance robustness, Read.csv wrapping can be performed at a further stage.
 
 
 ## Acknowledgements
 Give credit here.
 - This project was inspired by Tenglong Hong and Yucong Shi.
-- This project was based on [this tutorial](https://www.example.com).
+- This project was based on *Algorithms for optimization by Mykel J. Kochenferfer*.
 
 
 
