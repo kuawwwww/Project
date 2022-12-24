@@ -1,5 +1,5 @@
 # Genetic Algorithm in solving TSP (GA)
->   This project uses a genetic algorithm to solve the TSP problem: first a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.
+> TSP is the NP-hard problem. This project uses a genetic algorithm to compute the optimal individuals in the last generation population, which in turn can be used as an approximate optimal solution to the problem. 
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -14,6 +14,8 @@
 
 
 ## General Information
+TSP, or traveling salesman problem: Suppose a traveling salesman has to visit n cities, and he must choose the path to take, with the constraint that each city can only visit once, and finally return to the origin. The optimization goal of the problem is to minimize the path length.  
+
 - Provide general information about your project here.
 - What problem does it (intend to) solve?
 - What is the purpose of your project?
@@ -21,8 +23,10 @@
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 
-##  Prerequisites
-Baselines requires python3 with the development headers. You'll also need to use a third library: numpy, pandas, matplotlib, and time. You can install them (which are themself pip packages) via
+## Prerequisites
+* python 3
+* Windows or MacOS  
+You'll also need to use a third library: numpy, pandas, matplotlib, and time. You can install them (which are themself pip packages) via
 ```python
 pip install numpy
 pip install pandas
@@ -32,10 +36,12 @@ pip install time
 
 
 ## Screenshots
-![](https://github.com/kuawwwww/Project/raw/master/GA_plot.png) 
-<!-- If you have screenshots you'd like to share, include them here. -->
+<img src="https://github.com/kuawwwww/Project/blob/main/GA_plot.png" width="400">
 
 ## Usage
+To enhance robustness, we store the cities in [我的博客](http://blog.csdn.net/guodongxiaren "悬停显示"). So you can update the table directly when you need to use it.  
+
+This project uses a genetic algorithm to solve the TSP problem: first a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.
 How does one go about using it?
 Provide various use cases and code examples here.
 
