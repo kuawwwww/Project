@@ -1,8 +1,8 @@
-# Genetic Algorithm in solving TSP
-> TSP, or traveling salesman problem: Suppose a traveling salesman has to visit n cities, and he must choose the path to take, with the constraint that each city can only visit once, and finally return to the origin. The optimization goal of the problem is to minimize the path length.
-> This project uses a genetic algorithm to solve the TSP problem: first a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.
+# Genetic Algorithm in solving TSP (GA)
+>   This project uses a genetic algorithm to solve the TSP problem: first a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.
 
 ## Table of Contents
+* [Prerequisites](#Prerequisites)
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
 * [Features](#features)
@@ -14,6 +14,13 @@
 * [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
 <!-- * [License](#license) -->
+
+## Prerequisites
+Baselines requires python3 with the development headers. You'll also need to use a third library: numpy, pandas, matplotlib, and time. You can install them (which are themself pip packages) via
+··· pip install numpy
+··· pip install pandas
+··· pip install matplotlib
+··· pip install time
 
 
 ## General Information
