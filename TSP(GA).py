@@ -107,17 +107,17 @@ class Genatic_TSP(object):
             path_b2 = path_b.copy()
             path_a[i] = path_b1[i]
             path_b[i] = path_a1[i]
-            x = np.argwhere(path_a == path_a[i]) #返回非0的数组索引位置，索引数组条件为path_a == path_a[i]
+            x = np.argwhere(path_a == path_a[i]) 
             y = np.argwhere(path_b == path_b[i])
-            if len(x) == 2:#当DNA中有两个位置是同一样的数，换成
-                path_a[x[x != i]] = path_a2[i] #由于x是array
+            if len(x) == 2:
+                path_a[x[x != i]] = path_a2[i] 
             if len(y) == 2:
                 path_b[y[y != i]] = path_b2[i]
         return path_a, path_b
     
     def Cross(self):
 
-        for i in range(0,self.select_num,2): #步长为2的原因是因为要取i和i+1进行交叉
+        for i in range(0,self.select_num,2): 
             if self.cross_prob >= np.random.rand():
                 self.child[i, :], self.child[i + 1, :] = self.intercross(self.child[i, :],self.child[i + 1, :])
 
@@ -202,7 +202,7 @@ def Main(data,city_dict):
                    scale_units='xy')
     plt.quiver(y_[-1], x_[-1], y_[0] - y_[-1],x_[0] - x_[-1], color='r', width=0.005, angles='xy', scale=1,
                scale_units='xy')
-    plt.savefig('GA.png', dpi=300) #保存图片，由于直接输出的清晰度不高
+    plt.savefig('GA.png', dpi=300) 
     plt.show()      
     return TSP_GA
 
