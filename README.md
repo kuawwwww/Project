@@ -211,7 +211,7 @@ We choose **partial matching crossover**.
 ``` python   
 if __name__ == '__main__':
 
-    data = pd.read_csv("D:\python and optimization\cn.csv")
+    data = pd.read_csv("cn.csv")
     data = data[(data['capital'] == 'admin') | (data['capital'] == 'primary')]
     cities = data['city'].values
     loc_x_vals = data['lat'].values
@@ -391,7 +391,7 @@ Main content：
 ``` python  
 if __name__ == '__main__':
 
-    data = pd.read_csv("/Users/tlhong/Library/Mobile Documents/com~apple~CloudDocs/优化理论应用/Lecture 4's code/cn.csv")
+    data = pd.read_csv("cn.csv")
     data = data[(data['capital'] == 'admin') | (data['capital'] == 'primary')]
     cities = data['city'].values
     loc_x_vals = data['lat'].values
