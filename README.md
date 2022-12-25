@@ -417,7 +417,6 @@ Room for improvement:
 
 
 ## Acknowledgements
-Give credit here.
 - This project was inspired by Tenglong Hong and Yucong Shi.
 - Yucong Shi finished the coding for GA
 - Tenglong Hong finished the coding for QL
