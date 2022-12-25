@@ -404,6 +404,9 @@ if __name__ == '__main__':
     Main(data,city_dict)
 ```
 ## Comparison for GA and QL
+1. GA is an exact solution, but has the risk of local optimum; QL is an approximate solution, but is less stable.  
+2. GA is an interaction in a separate instance of the environment, so there is no feature of temporal decision making like QL. It also ignores the fact that policy is actually a mapping from state to action, and no features are learned from the interaction with the environment. Therefore, QL is generally more effective in finding the right policy.  
+3. There is no value function in GA, and there is no dynamic learning process in the life cycle of each agent, so only problems where the policy space is small enough or easily structured are suitable for solving with genetic algorithms. However, when the agent cannot perceive the environment well, evolutionary algorithms, for example, are more advantageous than reinforcement learning.  
 
 ## Room for Improvement
 
