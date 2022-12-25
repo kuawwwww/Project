@@ -1,11 +1,13 @@
-# Genetic Algorithm in solving TSP (GA)
-> TSP is the NP-hard problem. This project uses a genetic algorithm to compute the optimal individuals in the last generation population, which in turn can be used as an approximate optimal solution to the problem. 
+# Solving TSP via Genetic Algorithm(GA) and Q-Learning(QL)
+> TSP is the NP-hard problem. This project uses genetic algorithm and Q-Learning to compute the optimal choices of orders for visiting cities, which in turn can be used as an approximate optimal solution to the problem. And this project makes a comparison between these two algorithms.
 
 ## Table of Contents
 * [TSP problem](#tsp-problem)
 * [Prerequisites](#prerequisites)
 * [Usage](#usage)
-* [Code Structure](#code-structure)
+* [Code Structure for GA](#code-structure-for-ga)
+* [Code Structure for QL](#code-structure-for-ql)
+* [Comparison for GA and QL](#comparison-for-ga-and-ql)
 * [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
 
@@ -28,7 +30,7 @@ pip install time
 ```
 
 ## Usage
-This project uses a genetic algorithm to solve the TSP problem:   
+This project first uses a genetic algorithm to solve the TSP problem:   
 
 <div align=center><img src="https://github.com/kuawwwww/Project/blob/main/GA_plot.png" width="400"></div>
 
@@ -40,7 +42,7 @@ This project uses a genetic algorithm to solve the TSP problem:
 To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示"). So you can update the table directly when you need to use it.  But remember, you can download the file and make some changes. However, 'capital','lat' and 'lng' must be included as header.
 
 
-## Code Structure
+## Code Structure for GA
 Only part of the important code is presented below, the full code can be seen at:  [TSP(GA).py](https://github.com/kuawwwww/Project/blob/main/TSP(GA).py "悬停显示")  
 
 
@@ -145,7 +147,6 @@ $$p=\ \frac{p_i}{\sum_{i} p_i}\ $$
 4. Crossover: *PMX*   
 We choose **partial matching crossover**. 
 > The reason is that it ensures that genes appear only once in each chromosome and no duplicate genes appear in a chromosome.    
-
 ```python
     #  Partially-matched crossover, PMX , the main part in GA       
     def intercross(self,path_a,path_b):       
@@ -222,18 +223,203 @@ if __name__ == '__main__':
     np.random.seed(1)
     Main(data,city_dict)
 ```
+## Code Structure for QL
+Only part of the important code is presented below, the full code can be seen at:  [TSP(QL).py](https://github.com/kuawwwww/Project/blob/main/TSP(GA).py "悬停显示") 
+
+Main content：  
+* QL process
+* Visualization
+* Read csv
+
+### Variable names: 
+|**Variable names:**|**content**|
+|:--:|:--:|
+|self.epsilon|If the random number is larger than the parameter, take random action|
+|self.gamma|Parameter gamma in the update equation|
+|self.lr|Parameter alpha in the update equation|
+|self.data|Coordinate data of the city|
+|self.city_dict|Record the names of the cities|
+|self.num|number of cities|
+|self.R_table|Reward function table|
+|self.Q_table|Q_table for Q-Learning|
+|self.space|Set of nodes(cities)|
+|self.iterate_results|Record the training results|
+
+### QL process:
+1. Calculate the distance between cities (the code uses Euclidean distance as an example) and meanwhile, initialize the Reward table using the distances
+
+```python
+    def computing_distance(self): #computing the distance matrix
+        res = np.zeros((self.num, self.num))
+        k = 0
+        for i in range(self.num):
+            for j in range(i + 1, self.num):
+                res[i, j] = np.linalg.norm(self.data[i, :] - self.data[j, :])
+                res[j, i] = res[i, j]
+                if res[i,j] >= k:
+                    k = res[i,j]
+        R_table = k - res  # Initialize R_table (Reward table, We initialize ench enty with the difference between its original distance with maximum distance)
+        return res, R_table
+```
+2. Train the Q_table
+> We use Q-Learning to solve the TSP. Therefore, we need to construct Q-Table and then update it.
+> We choose the **Greedy Algorithm** to initialize the Q-Table, but we also consider random factors to take generate next action.
+```python
+    def Train(self):
+        iterate_results = []  #Store each training's result
+        for i in range(500):  #In general,we train the model for 50000 times
+            # Initial position
+            path = [0]
+            # Each round, we obtain (num-1) positions
+            for j in range(self.num - 1):
+                s = path[j]  # Current position
+                s_row = self.Q_table[s]  # matching the current position with the row in Q_table
+                remaining = set(self.space) - set(path)  # remaining nodes
+
+                # Find the maximal value in remainging nodes
+                max_value = -1000  
+                a = 0
+
+                # We use greedy method to obtain next action
+                for rm in remaining:
+                    Q = self.Q_table[s, rm]
+                    if Q > max_value:
+                        max_value = Q
+                        a = rm
+
+                # Randomize next action to avoid trapping in local optimum
+                if np.random.uniform() > self.epsilon:
+                    a = np.random.choice(np.array(list(set(self.space) - set(path))))
+ ```
+ 3. Update Q_table using the following euqation
+ > Update equation:
+ <div align=center><img src="https://github.com/kuawwwww/Project/blob/main/QL_Equation_plot.png" width="600"></div>
+ 
+ ```python
+                # Update Q_table through the above results
+                if j != int(self.num/2):
+                    self.Q_table[s, a] = (1 - self.lr) * self.Q_table[s, a] + self.lr * (self.R_table[s, a] + self.gamma * max_value)
+                else:
+                    self.Q_table[s, a] = (1 - self.lr) * self.Q_table[s, a] + self.lr * self.R_table[s, a]
+                path.append(a)
+                self.Q_table[a, 0] = (1 - self.lr) * self.Q_table[a, 0] + self.lr * self.R_table[a, 0]
+            # End position
+            path.append(0)   #We should go back to the origin at the end
+ ```
+ 4. Test the training result
+ ```python
+            # Test the train result (Obtain shortest path w.p.t current Q_table)
+            result = [0]
+            for _ in range(self.num-1):
+                loc = result[-1]
+                new_remaining = set(self.space) - set(result)  # remaining nodes
+
+                # Find the maximal value in remaining node
+                new_max_value = -1000 
+                a = 0
+
+                # We repeat the action similar to update Q_table before
+                for rm in new_remaining:
+                    new_Q = self.Q_table[loc, rm]
+                    if new_Q > new_max_value:
+                        a = rm
+                        new_max_value = new_Q
+                result.append(a)
+            result.append(0) #We need to go bcak to the origin
+
+            # Compute the current total distacne 
+            length = 0
+            for v in range(1, self.num):
+                length += self.distance_matrix[result[v - 1], result[v]]
+
+            # Print the result with an interval of 50 rounds
+            if (i + 1) % 50 == 0:
+                print(f"Start {i+1}'s round of training")
+                print(f"The shortest distance after {i+1}'s round is {length}"+'\n')
+            iterate_results.append(length)
+        return iterate_results
+```
+5. Get the optimal route w.p.t the Q_table being trained before
+ ```python
+     def get_route(self):
+
+        # The following steps are similar to the part in training before 
+        result = [0]
+        for i in range(self.num):
+            loc = result[-1]
+            remaining = set(self.space) - set(result)  #remaining nodes
+            max_value = -1000
+            # Find the maximal value in remaining node
+            a = 0
+            # We use greedy method to choose next action
+            for rm in remaining:
+                new_Q = self.Q_table[loc, rm]
+                if new_Q > max_value:
+                    a = rm
+                    max_value = new_Q
+            result.append(a)
+        result.append(0)
+        length = 0
+        for v in range(1, self.num):
+            length += self.distance_matrix[result[v - 1], result[v]]
+        result = [i+1 for i in result[:-1]]
+
+        route = str(result[0]) + '-->'
+        for i in range(1, self.num):
+            route += str(result[i] ) + '-->'
+        route += str(result[0]) + '\n'
+
+        route_city = str(self.city_dict[result[0]-1]) + '-->'
+        for i in range(1, self.num):
+            route_city += str(self.city_dict[result[i]-1]) + '-->'
+        route_city += str(self.city_dict[result[0]-1]) + '\n'
+
+ 
+        print(f"The shortest distance after 50000 times training is：{length}"+'\n')
+        print(f"The optimal path after 50000 times training is: ")
+        print(route)
+        print(route_city)
+
+        out_result = np.array([0]*self.num)
+        for i in range(self.num):
+            out_result[i] = result[i]
+        out_result -= 1
+
+        return out_result
+```
+### Main function
+``` python  
+if __name__ == '__main__':
+
+    data = pd.read_csv("/Users/tlhong/Library/Mobile Documents/com~apple~CloudDocs/优化理论应用/Lecture 4's code/cn.csv")
+    data = data[(data['capital'] == 'admin') | (data['capital'] == 'primary')]
+    cities = data['city'].values
+    loc_x_vals = data['lat'].values
+    loc_y_vals = data['lng'].values
+    n = data.shape[0]
+    city_dict = dict(zip([i for i in range(0,n)],cities))
+    data = np.array([[loc_x_vals[i],loc_y_vals[i]] for i in range(0,n)])
+
+    np.random.seed(1)
+    Main(data,city_dict)
+```
+## Comparison for GA and QL
 
 ## Room for Improvement
 
 Room for improvement:
-- At present, the code is prone to falling into precocity because the difference in fitness function is small, which is also one of the drawbacks of GA.
+- At present, GA code is prone to falling into precocity because the difference in fitness function is small, which is also one of the drawbacks of GA.
+- For static problems like TSP, reinforcement learning still performs worse than GA, however, there is still a promising prospect to combine Reinforcement learning with TSP and other NP hard problems. 
 - To enhance robustness, Read.csv wrapping can be performed at a further stage.
 
 
 ## Acknowledgements
 Give credit here.
 - This project was inspired by Tenglong Hong and Yucong Shi.
+- Yucong Shi finished the coding for GA
+- Tenglong Hong finished the coding for QL
 - This project was based on *Algorithms for optimization by Mykel J. Kochenferfer*.
+
 
 
 
