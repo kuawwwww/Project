@@ -293,7 +293,7 @@ Main content：
  ```
  3. Update Q_table using the following euqation
  > Update equation:
- <div align=center><img src="https://github.com/kuawwwww/Project/blob/main/QL_Equation_plot.png" width="600"></div>
+$$Q(s,a) = (1- \alpha )Q(s,a)+\alpha [R(s,a)+\gamma \times maxQ]$$
  
  ```python
                 # Update Q_table through the above results
