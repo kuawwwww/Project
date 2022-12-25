@@ -30,15 +30,8 @@ pip install time
 ```
 
 ## Usage
-This project first uses a genetic algorithm to solve the TSP problem:   
 
-<div align=center><img src="https://github.com/kuawwwww/Project/blob/main/GA_plot.png" width="400"></div>
-
- 
-* First a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. 
-* Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. 
-* Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.  
-
+You can download [TSP(GA).py](https://github.com/kuawwwww/Project/blob/main/TSP(GA).py "悬停显示")  and [TSP(QL).py](https://github.com/kuawwwww/Project/blob/main/TSP(QL).py "悬停显示")  in the profile to run the code.  
 To enhance robustness, we store the cities in [cn.csv](https://github.com/kuawwwww/Project/blob/main/cn.csv "悬停显示"). So you can update the table directly when you need to use it.  But remember, you can download the file and make some changes. However, 'capital','lat' and 'lng' must be included as header.
 
 
@@ -65,6 +58,18 @@ Main content：
 |self.parent，self.child|Initialize parent and child|
 
 ### GA process:
+
+This project first uses a genetic algorithm to solve the TSP problem:   
+
+<div align=center><img src="https://github.com/kuawwwww/Project/blob/main/GA_plot.png" width="400"></div>
+
+ 
+* First a permutation approach encodes the sequence of visited cities, which ensures that each city passes through and only once. 
+* Then an initial population is generated and the distance of all cities is traversed to calculate the fitness function. 
+* Then selection is performed with Roulette wheel selection, using Partially-matched crossover and simple mutation to determine the crossover operator and variation operator.  
+
+
+
 1. Calculate the distance between cities (the code uses Euclidean distance as an example)
 
 ```python
