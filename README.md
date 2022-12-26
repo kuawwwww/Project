@@ -408,17 +408,17 @@ if __name__ == '__main__':
     np.random.seed(1)
     Main(data,city_dict)
 ```
-## Comparison for GA and QL
+## Results and Comparison for GA and QL
 
 ---
 
-***GA*** 
+***GA's results trend and optimal route*** 
 <div align=center><img src="https://github.com/kuawwwww/Project/blob/main/GA.png" width="400">  <img src="https://github.com/kuawwwww/Project/blob/main/GA_trend.png" width="400"></div>
 
 
 ---
 
-***QL*** 
+***QL's results trend and optimal route*** 
 
 <div align=center><img src="https://github.com/kuawwwww/Project/blob/main/QL_plot.png" width="400"><img src="https://github.com/kuawwwww/Project/blob/main/QL_trend.png" width="400"></div>  
 
