@@ -425,16 +425,19 @@ if __name__ == '__main__':
 
 ---
 
-1. GA is an exact solution, but has the risk of local optimum; QL is an approximate solution, but is less stable.  
+1. GA can easily approach an exact solution, but has the risk of local optimum; QL can find an approximate solution, but is less stable.  
 2. GA is an interaction in a separate instance of the environment, so there is no feature of temporal decision making like QL. It also ignores the fact that policy is actually a mapping from state to action, and no features are learned from the interaction with the environment. Therefore, QL is generally more effective in finding the right policy.  
-3. There is no value function in GA, and there is no dynamic learning process in the life cycle of each agent, so only problems where the policy space is small enough or easily structured are suitable for solving with genetic algorithms. However, when the agent cannot perceive the environment well, evolutionary algorithms, for example, are more advantageous than reinforcement learning.  
+3. There is no value function in GA, and there is no dynamic learning process in the life cycle of each agent, so only problems where the policy space is small enough or easily structured are suitable for solving with genetic algorithms. However, when the agent cannot perceive the environment well, heuristic algorithms like GA are more advantageous than reinforcement learning.  
+4. In today’s logistic industry, heuristic algorithms like Genetic Algorithm have been widely used to help companies make decisions. However, there has been voices to combine RL with logistic problems, and we do believe RL offers us a brand new way to solve these NP-hard problems.
+
 
 ## Room for Improvement
 
 Room for improvement:
 - At present, GA code is prone to falling into precocity because the difference in fitness function is small, which is also one of the drawbacks of GA.
 - For static problems like TSP, reinforcement learning still performs worse than GA, however, there is still a promising prospect to combine Reinforcement learning with TSP and other NP hard problems. 
-- To enhance robustness, Read.csv wrapping can be performed at a further stage.
+- For QL, we just use single agent instead of multi-agents. However, multi-agents is the current “trend” and might be more efficient.
+- To enhance robustness, the process of "Read.csv wrapping" can be performed at a further stage.
 
 
 ## Acknowledgements
