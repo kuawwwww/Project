@@ -210,7 +210,7 @@ def Main(data,city_dict):
 # Main function    
 if __name__ == '__main__':
 
-    data = pd.read_csv("D:\python and optimization\cn.csv")
+    data = pd.read_csv("cn.csv")
     data = data[(data['capital'] == 'admin') | (data['capital'] == 'primary')]
     cities = data['city'].values
     loc_x_vals = data['lat'].values
